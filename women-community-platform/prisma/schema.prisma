@@ -1,0 +1,417 @@
+// Women's Community Platform — Prisma Schema
+// SQLite provider (no enums, no named FK maps)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ─── User & Auth ─────────────────────────────────────────────────────────────
+// role: VISITOR | PENDING | MEMBER | ADMIN | SUPER_ADMIN
+// status: PENDING | APPROVED | REJECTED | SUSPENDED
+
+model User {
+  id                String    @id @default(cuid())
+  email             String    @unique
+  emailVerified     DateTime?
+  passwordHash      String?
+  name              String?
+  image             String?
+  role              String    @default("PENDING")
+  status            String    @default("PENDING")
+  invitedBy         String?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  lastLogin         DateTime?
+
+  profile            MemberProfile?
+  businesses         Business[]
+  marketItems        MarketItem[]
+  events             Event[]
+  eventRegistrations EventRegistration[]
+  sentEnquiries      Enquiry[]
+  notifications      Notification[]
+  reviewsGiven       ReviewLog[]
+  auditLogs          AuditLog[]
+  savedItems         SavedItem[]
+  reports            Report[]
+  sessions           Session[]
+  accounts           Account[]
+  verificationTokens VerificationToken[]
+  invitations        Invitation[]
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  id         String   @id @default(cuid())
+  identifier String
+  token      String   @unique
+  expires    DateTime
+  userId     String?
+  type       String   @default("email")
+
+  user       User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+model Invitation {
+  id          String    @id @default(cuid())
+  email       String    @unique
+  tokenHash   String    @unique
+  expiresAt   DateTime
+  acceptedAt  DateTime?
+  createdBy   String
+  preVerified Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+
+  creator     User      @relation(fields: [createdBy], references: [id])
+
+  @@map("invitations")
+}
+
+// ─── Member Profile ──────────────────────────────────────────────────────────
+// status: DRAFT | SUBMITTED | IN_REVIEW | APPROVED | PUBLISHED | CHANGES_REQUESTED | REJECTED | ARCHIVED
+
+model MemberProfile {
+  id               String    @id @default(cuid())
+  userId           String    @unique
+  slug             String    @unique
+  name             String
+  photo            String?
+  headline         String?
+  bio              String?
+  city             String?
+  country          String?
+  phone            String?
+  website          String?
+  linkedin         String?
+  instagram        String?
+  twitter          String?
+  facebook         String?
+  interests        String    @default("[]")
+  skills           String    @default("[]")
+  industryId       String?
+  visibilityPhone  Boolean   @default(false)
+  visibilityEmail  Boolean   @default(false)
+  isFeatured       Boolean   @default(false)
+  featuredFrom     DateTime?
+  featuredTo       DateTime?
+  featuredOrder    Int?
+  status           String    @default("DRAFT")
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  industry         Category? @relation(fields: [industryId], references: [id])
+  reviewLogs       ReviewLog[]
+
+  @@map("member_profiles")
+}
+
+// ─── Business / SME ──────────────────────────────────────────────────────────
+
+model Business {
+  id           String    @id @default(cuid())
+  ownerId      String
+  name         String
+  slug         String    @unique
+  logo         String?
+  banner       String?
+  categoryId   String?
+  description  String?
+  tagline      String?
+  contactJson  String    @default("{}")
+  hours        String?
+  location     String?
+  website      String?
+  socialJson   String    @default("{}")
+  isFeatured   Boolean   @default(false)
+  featuredFrom DateTime?
+  featuredTo   DateTime?
+  featuredOrder Int?
+  status       String    @default("DRAFT")
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  owner        User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  category     Category? @relation(fields: [categoryId], references: [id])
+  offerings    BusinessOffering[]
+  enquiries    Enquiry[]
+  reviewLogs   ReviewLog[]
+  tags         BusinessTag[]
+
+  @@map("businesses")
+}
+
+model BusinessOffering {
+  id           String    @id @default(cuid())
+  businessId   String
+  type         String    @default("PRODUCT")
+  title        String
+  description  String?
+  images       String    @default("[]")
+  price        Float?
+  priceLabel   String?
+  status       String    @default("DRAFT")
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  business     Business  @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@map("business_offerings")
+}
+
+// ─── Marketplace ─────────────────────────────────────────────────────────────
+
+model MarketItem {
+  id          String    @id @default(cuid())
+  sellerId    String
+  title       String
+  slug        String    @unique
+  category    String    @default("USED_ITEMS")
+  condition   String    @default("GOOD")
+  price       Float?
+  currency    String    @default("USD")
+  images      String    @default("[]")
+  location    String?
+  description String?
+  saleStatus  String    @default("AVAILABLE")
+  status      String    @default("DRAFT")
+  expiresAt   DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  seller      User      @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  enquiries   Enquiry[]
+  reviewLogs  ReviewLog[]
+  savedBy     SavedItem[]
+
+  @@map("market_items")
+}
+
+// ─── Events ──────────────────────────────────────────────────────────────────
+
+model Event {
+  id           String    @id @default(cuid())
+  organiserId  String
+  title        String
+  slug         String    @unique
+  type         String    @default("OTHER")
+  description  String?
+  banner       String?
+  startsAt     DateTime
+  endsAt       DateTime
+  timezone     String    @default("UTC")
+  venue        String?
+  onlineUrl    String?
+  isOnline     Boolean   @default(false)
+  capacity     Int?
+  price        Float?
+  isFree       Boolean   @default(true)
+  currency     String    @default("USD")
+  tagsJson     String    @default("[]")
+  isPinnedHome Boolean   @default(false)
+  sponsorName  String?
+  sponsorLogo  String?
+  status       String    @default("DRAFT")
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  organiser    User      @relation(fields: [organiserId], references: [id], onDelete: Cascade)
+  registrations EventRegistration[]
+  enquiries    Enquiry[]
+  reviewLogs   ReviewLog[]
+
+  @@map("events")
+}
+
+model EventRegistration {
+  id          String    @id @default(cuid())
+  eventId     String
+  userId      String?
+  name        String
+  email       String
+  phone       String?
+  quantity    Int       @default(1)
+  answersJson String    @default("{}")
+  status      String    @default("CONFIRMED")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  event       Event     @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user        User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@map("event_registrations")
+}
+
+// ─── Enquiries ───────────────────────────────────────────────────────────────
+
+model Enquiry {
+  id           String    @id @default(cuid())
+  targetType   String
+  targetId     String
+  senderId     String?
+  senderName   String
+  senderEmail  String
+  senderPhone  String?
+  message      String
+  status       String    @default("UNREAD")
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  sender       User?     @relation(fields: [senderId], references: [id], onDelete: SetNull)
+  business     Business? @relation(fields: [targetId], references: [id], onDelete: Cascade)
+  marketItem   MarketItem? @relation(fields: [targetId], references: [id], onDelete: Cascade)
+  event        Event?    @relation(fields: [targetId], references: [id], onDelete: Cascade)
+
+  @@map("enquiries")
+}
+
+// ─── Review / Approval Workflow ───────────────────────────────────────────────
+
+model ReviewLog {
+  id          String    @id @default(cuid())
+  entityType  String
+  entityId    String
+  state       String
+  reviewerId  String?
+  comment     String?
+  createdAt   DateTime  @default(now())
+
+  reviewer    User?         @relation(fields: [reviewerId], references: [id], onDelete: SetNull)
+  profile     MemberProfile? @relation(fields: [entityId], references: [id], onDelete: Cascade)
+  business    Business?     @relation(fields: [entityId], references: [id], onDelete: Cascade)
+  marketItem  MarketItem?   @relation(fields: [entityId], references: [id], onDelete: Cascade)
+  eventLog    Event?        @relation(fields: [entityId], references: [id], onDelete: Cascade)
+
+  @@map("review_logs")
+}
+
+// ─── Categories & Tags ───────────────────────────────────────────────────────
+
+model Category {
+  id         String   @id @default(cuid())
+  type       String
+  name       String
+  slug       String   @unique
+  icon       String?
+  createdAt  DateTime @default(now())
+
+  businesses       Business[]
+  memberProfiles   MemberProfile[]
+
+  @@map("categories")
+}
+
+model BusinessTag {
+  id         String   @id @default(cuid())
+  businessId String
+  tag        String
+
+  business   Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@unique([businessId, tag])
+  @@map("business_tags")
+}
+
+// ─── Notifications ───────────────────────────────────────────────────────────
+
+model Notification {
+  id          String    @id @default(cuid())
+  userId      String
+  type        String
+  title       String
+  message     String
+  payloadJson String    @default("{}")
+  readAt      DateTime?
+  createdAt   DateTime  @default(now())
+
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notifications")
+}
+
+// ─── Saved Items ─────────────────────────────────────────────────────────────
+
+model SavedItem {
+  id           String     @id @default(cuid())
+  userId       String
+  marketItemId String
+  createdAt    DateTime   @default(now())
+
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  marketItem   MarketItem @relation(fields: [marketItemId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, marketItemId])
+  @@map("saved_items")
+}
+
+// ─── Reports ─────────────────────────────────────────────────────────────────
+
+model Report {
+  id          String   @id @default(cuid())
+  reporterId  String?
+  targetType  String
+  targetId    String
+  reason      String
+  status      String   @default("PENDING")
+  createdAt   DateTime @default(now())
+
+  reporter    User?    @relation(fields: [reporterId], references: [id], onDelete: SetNull)
+
+  @@map("reports")
+}
+
+// ─── Audit Log ───────────────────────────────────────────────────────────────
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorId    String?
+  action     String
+  entity     String
+  entityId   String
+  before     String?
+  after      String?
+  createdAt  DateTime @default(now())
+
+  actor      User?    @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@map("audit_logs")
+}
