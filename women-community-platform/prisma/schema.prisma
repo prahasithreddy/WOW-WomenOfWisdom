@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -297,9 +297,9 @@ model Enquiry {
   updatedAt    DateTime  @updatedAt
 
   sender       User?     @relation(fields: [senderId], references: [id], onDelete: SetNull)
-  business     Business? @relation(fields: [targetId], references: [id], onDelete: Cascade)
-  marketItem   MarketItem? @relation(fields: [targetId], references: [id], onDelete: Cascade)
-  event        Event?    @relation(fields: [targetId], references: [id], onDelete: Cascade)
+  business     Business? @relation(fields: [targetId], references: [id], onDelete: Cascade, map: "enquiries_targetId_business_fkey")
+  marketItem   MarketItem? @relation(fields: [targetId], references: [id], onDelete: Cascade, map: "enquiries_targetId_market_fkey")
+  event        Event?    @relation(fields: [targetId], references: [id], onDelete: Cascade, map: "enquiries_targetId_event_fkey")
 
   @@map("enquiries")
 }
@@ -316,10 +316,10 @@ model ReviewLog {
   createdAt   DateTime  @default(now())
 
   reviewer    User?         @relation(fields: [reviewerId], references: [id], onDelete: SetNull)
-  profile     MemberProfile? @relation(fields: [entityId], references: [id], onDelete: Cascade)
-  business    Business?     @relation(fields: [entityId], references: [id], onDelete: Cascade)
-  marketItem  MarketItem?   @relation(fields: [entityId], references: [id], onDelete: Cascade)
-  eventLog    Event?        @relation(fields: [entityId], references: [id], onDelete: Cascade)
+  profile     MemberProfile? @relation(fields: [entityId], references: [id], onDelete: Cascade, map: "review_logs_entityId_profile_fkey")
+  business    Business?     @relation(fields: [entityId], references: [id], onDelete: Cascade, map: "review_logs_entityId_business_fkey")
+  marketItem  MarketItem?   @relation(fields: [entityId], references: [id], onDelete: Cascade, map: "review_logs_entityId_market_fkey")
+  eventLog    Event?        @relation(fields: [entityId], references: [id], onDelete: Cascade, map: "review_logs_entityId_event_fkey")
 
   @@map("review_logs")
 }
