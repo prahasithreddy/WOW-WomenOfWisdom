@@ -1,0 +1,472 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}</style><style>:root{color-scheme:light dark;--md-bg:#fff;--md-text:rgba(0,0,0,.8);--md-muted:rgba(0,0,0,.6);--md-fill:rgba(0,0,0,.04);--md-fill-strong:rgba(0,0,0,.06);--md-rule:rgba(0,0,0,.1);--md-rule-strong:rgba(0,0,0,.16);--md-link:hsl(210 100% 45%)}@media (prefers-color-scheme:dark){:root:where(:not([data-theme="light"])){--md-bg:#0d0d0d;--md-text:rgba(255,255,255,.85);--md-muted:rgba(255,255,255,.6);--md-fill:rgba(255,255,255,.06);--md-fill-strong:rgba(255,255,255,.09);--md-rule:rgba(255,255,255,.14);--md-rule-strong:rgba(255,255,255,.22);--md-link:hsl(210 100% 72%)}}:root[data-theme="dark"]{color-scheme:dark;--md-bg:#0d0d0d;--md-text:rgba(255,255,255,.85);--md-muted:rgba(255,255,255,.6);--md-fill:rgba(255,255,255,.06);--md-fill-strong:rgba(255,255,255,.09);--md-rule:rgba(255,255,255,.14);--md-rule-strong:rgba(255,255,255,.22);--md-link:hsl(210 100% 72%)}:root[data-theme="light"]{color-scheme:light}@media print{:root,:root[data-theme="dark"]{color-scheme:light;--md-bg:#fff;--md-text:rgba(0,0,0,.8);--md-muted:rgba(0,0,0,.6);--md-fill:rgba(0,0,0,.04);--md-fill-strong:rgba(0,0,0,.06);--md-rule:rgba(0,0,0,.1);--md-rule-strong:rgba(0,0,0,.16);--md-link:hsl(210 100% 45%)}}body{background:var(--md-bg);color:var(--md-text);max-width:720px;margin:0 auto;padding:32px;display:flex;flex-direction:column;gap:10px;font:14px/1.55 -apple-system,BlinkMacSystemFont,'SF Pro','Segoe UI',sans-serif;overflow-wrap:break-word}body>:first-child{margin-top:0}h1,h2,h3,h4,h5,h6{margin:6px 0 0;line-height:1.25;font-weight:600;text-wrap:balance}h1{font-size:1.35em}h2{font-size:1.15em;color:var(--md-muted)}h3,h4,h5,h6{font-size:1em}p,ul,ol,blockquote,table,pre,hr{margin:0}strong{font-weight:600}a{color:var(--md-link);text-decoration:none}a:hover{text-decoration:underline}ul,ol{display:flex;flex-direction:column;gap:6px;padding-left:22px}ul{list-style:disc}ol{list-style:decimal}:is(li,td,th)>*+:is(p,ul,ol,blockquote){margin-top:6px}blockquote{display:flex;flex-direction:column;gap:10px;border-left:2px solid var(--md-rule);padding-left:10px;color:var(--md-muted)}:not(pre)>code{background:var(--md-fill);padding:1px 3px;border-radius:4px;font:.92em 'SF Mono',ui-monospace,Menlo,Consolas,monospace}a>code{background:none;color:inherit}pre{background:var(--md-fill);padding:10px 12px;border-radius:6px;overflow-x:auto;font:12px/1.5 'SF Mono',ui-monospace,Menlo,Consolas,monospace;margin-block:4px}pre code{background:none;padding:0;font:inherit}table{width:100%;border-collapse:separate;border-spacing:2px;font:inherit}th,td{padding:6px 8px;border-radius:3px;text-align:left;vertical-align:top}th{background:var(--md-fill-strong);font-weight:600}td{background:var(--md-fill)}:is(th,td) :not(pre)>code{background:transparent}hr{border:0;border-top:1px solid var(--md-rule-strong);margin-block:10px}img{max-width:100%;height:auto;border-radius:4px}</style>
+</head><body>
+<h1>Women's Community Platform — Technical Brief</h1>
+<p><strong>Version 1.0 · Scope: MVP + Phase 2 roadmap</strong>
+<em>Member registration · Business promotion · Community connections</em></p>
+<hr>
+<h2>1. Purpose &amp; Vision</h2>
+<p>A premium, women-focused community platform that combines a <strong>professional network</strong>, <strong>business (SME) directory</strong>, <strong>buy &amp; sell marketplace</strong> and <strong>events platform</strong> in one simple product. Members register, are verified by an admin, and publish profiles, business listings, items and events. All public content passes through an <strong>admin review workflow</strong> before going live. Visitors browse, enquire, buy/contact and register for events.</p>
+<p><strong>Success criteria</strong></p>
+<ul>
+<li>A new member can register and submit a profile in under 5 minutes.</li>
+<li>Admin can review any submission in under 2 minutes.</li>
+<li>Public pages load in under 2.5s (LCP) on mobile.</li>
+<li>Fully usable on mobile (majority of expected traffic).</li>
+</ul>
+<hr>
+<h2>2. User Roles &amp; Permissions</h2>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Description</th>
+<th>Key permissions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Visitor</strong></td>
+<td>Anonymous public user</td>
+<td>Browse directories, view listings/events, send enquiries, register for events, contact/buy</td>
+</tr>
+<tr>
+<td><strong>Member</strong></td>
+<td>Approved registered woman</td>
+<td>Manage own profile, business, items, events (submit for review); dashboard; connect with members</td>
+</tr>
+<tr>
+<td><strong>Pending member</strong></td>
+<td>Registered, awaiting approval</td>
+<td>Login, edit profile, view status; cannot publish</td>
+</tr>
+<tr>
+<td><strong>Admin</strong></td>
+<td>Platform manager</td>
+<td>Approve/reject members and content, feature listings, manage users/events, view reports</td>
+</tr>
+<tr>
+<td><strong>Super admin</strong></td>
+<td>Technical owner</td>
+<td>Admin rights + settings, admin accounts, audit log, data export</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>3. Core Workflows</h2>
+<h3>3.1 Membership</h3>
+<ol>
+<li><strong>New member:</strong> registers → verifies email → completes profile → status <code>PENDING</code>.</li>
+<li><strong>Existing member:</strong> admin uploads/creates member (CSV import or manual) → system sends <strong>invitation link</strong> (signed, expiring token) → member accepts, sets password, updates profile → <code>PENDING</code> (or auto-<code>APPROVED</code> if admin flags pre-verified).</li>
+<li><strong>Admin approval:</strong> reviews details → <code>APPROVED</code> (welcome email, dashboard unlocked) or <code>REJECTED</code> (with reason, member can edit and resubmit).</li>
+</ol>
+<h3>3.2 Content lifecycle (profiles, SME listings, items, events)</h3>
+<pre><code>DRAFT → SUBMITTED → IN_REVIEW → APPROVED → PUBLISHED
+                        │
+                        └→ CHANGES_REQUESTED → (member revises) → SUBMITTED
+                        └→ REJECTED (final, with reason)
+PUBLISHED → ARCHIVED / EXPIRED (items after N days; events after end date)
+</code></pre>
+<ul>
+<li>Every state change is logged (who, when, comment) in a review history.</li>
+<li>Edits to already-published content re-enter review (configurable: minor edits auto-publish).</li>
+<li>Email + in-app notification on every status change.</li>
+</ul>
+<h3>3.3 Visitor journey</h3>
+<p>Browse → search/filter → view detail → <strong>Enquire</strong> (form, sent to owner + logged), <strong>Buy</strong> (contact or checkout, see 4.5) or <strong>Register for event</strong>.</p>
+<hr>
+<h2>4. Functional Requirements</h2>
+<h3>4.1 Authentication &amp; Registration</h3>
+<ul>
+<li>Email + password, plus optional Google sign-in. Email verification mandatory.</li>
+<li>Password reset, session management, rate-limited login, optional 2FA for admins.</li>
+<li>Registration fields: full name, email, phone, city/country, short bio, photo, industry/interests, social links, consent to terms and directory visibility.</li>
+</ul>
+<h3>4.2 Member Profile &amp; Public Directory</h3>
+<ul>
+<li>Public profile: photo, name, headline, bio, location, skills/interests, links, linked business.</li>
+<li>Visibility controls (public / members-only / hidden fields such as phone).</li>
+<li>Directory: search by name, keyword, location, industry; filters; pagination; &quot;Featured&quot; badge.</li>
+<li>Member-to-member <strong>connect/message</strong> (Phase 1: contact request via platform email relay; Phase 2: in-app messaging).</li>
+</ul>
+<h3>4.3 SME / Business Directory</h3>
+<ul>
+<li>Business profile: name, logo, banner, category, description, products/services (name, description, images, price optional), contact details, website, social links, opening hours, location/map.</li>
+<li>Categories and tags managed by admin.</li>
+<li>Enquiry form per business; enquiries visible in member dashboard.</li>
+<li>Featured SMEs shown on home page and top of category results.</li>
+</ul>
+<h3>4.4 Events</h3>
+<ul>
+<li>Event fields: title, type (cultural / corporate / property / webinar / other), description, banner, date/time, timezone, venue or online link, capacity, price (free/paid), organiser, tags.</li>
+<li>Members submit events (review workflow); admin can create events directly.</li>
+<li>Public event calendar/list, filters by type/date/location, event detail page.</li>
+<li><strong>Registration:</strong> name, email, phone, custom questions, ticket quantity; confirmation email with calendar (.ics) file; capacity and waitlist handling; attendee list export (CSV) for organiser/admin.</li>
+</ul>
+<h4>4.4.1 Home-page &quot;See What's Happening&quot; Feed</h4>
+<p><em>Inspired by the event feed on wlnarkansas.org: a compact, visual stack of upcoming events that shows visitors the community is active.</em></p>
+<table>
+<thead>
+<tr>
+<th>Element</th>
+<th>Specification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Heading</td>
+<td>&quot;See What's Happening&quot; with a one-line intro</td>
+</tr>
+<tr>
+<td>Data source</td>
+<td>Only <strong>published</strong> events with <code>ends_at</code> in the future, sorted by start date; admin-pinned events (<code>is_pinned_home</code>) appear first</td>
+</tr>
+<tr>
+<td>Card count</td>
+<td>3 cards: single column on mobile, 3-column grid on desktop; configurable in admin settings</td>
+</tr>
+<tr>
+<td>Card content</td>
+<td>16:9 banner image, event-type chip (Cultural / Corporate / Property / Webinar / Other), title, date, time and timezone, location or &quot;Online&quot;, Free/Paid tag, &quot;X spots left&quot; when capacity is set, optional sponsor line/logo</td>
+</tr>
+<tr>
+<td>Actions</td>
+<td>&quot;View event&quot; button on each card (or &quot;Register&quot; when registration is open); &quot;See all events&quot; button below the feed linking to the full events directory</td>
+</tr>
+<tr>
+<td>Banner handling</td>
+<td>Uploads auto-cropped to 16:9 with focal-point control; branded text fallback (event type + date on lavender/teal background) when no image is supplied</td>
+</tr>
+<tr>
+<td>Empty state</td>
+<td>&quot;No upcoming events yet. Share yours with the community.&quot; with a button to submit an event (members) or join (visitors)</td>
+</tr>
+<tr>
+<td>Performance</td>
+<td>Server-rendered, cached (ISR, revalidated on event publish/update), lazy-loaded images with reserved aspect ratio to avoid layout shift</td>
+</tr>
+<tr>
+<td>Accessibility</td>
+<td>Each card is one focusable link region, meaningful alt text from the event title, visible date/time as text (never only inside the image)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Acceptance:</strong> an event appears in the feed within one minute of admin approval, disappears automatically after it ends, and pinned events always appear before unpinned ones.</p>
+<h3>4.5 Buy &amp; Sell Marketplace</h3>
+<ul>
+<li>Listing: title, category (used items, moving-out sales, other), condition, price, images (up to 8), location, description, status (<code>AVAILABLE</code>, <code>RESERVED</code>, <code>SOLD</code>), auto-expiry (default 60 days, renewable).</li>
+<li>Buyer actions: <strong>Contact seller</strong> (relay form, no raw contact exposed unless seller allows). Saved items (logged-in members).</li>
+<li><strong>Payments:</strong> MVP is contact-based (peer-to-peer, no platform payments). Phase 2: online checkout via Stripe/Razorpay for SME products and paid events.</li>
+<li>Report-listing button feeding admin moderation queue.</li>
+</ul>
+<h3>4.6 Member Dashboard</h3>
+<ul>
+<li>Overview: profile completeness, status of each submission, notifications.</li>
+<li>Tabs: My Profile · My Business · My Listings (products/services) · Buy &amp; Sell · My Events · Enquiries · Registrations · Saved.</li>
+<li>Clear status chips (Draft, In review, Changes needed, Live) with admin comments and a one-click <strong>Revise &amp; resubmit</strong>.</li>
+</ul>
+<h3>4.7 Admin Dashboard</h3>
+<ul>
+<li><strong>Approvals queue:</strong> members and content, filterable by type/status/age; side-by-side view, approve / request changes / reject with templated reasons.</li>
+<li><strong>Featured management:</strong> drag-to-order featured members/SMEs, schedule start/end dates; pin events to the home-page &quot;See What's Happening&quot; feed.</li>
+<li><strong>Users:</strong> search, suspend, reactivate, change role, import existing members (CSV), resend invitation.</li>
+<li><strong>Events:</strong> create/edit, view registrations, export.</li>
+<li><strong>Moderation:</strong> reported listings, spam enquiries.</li>
+<li><strong>Reports:</strong> new registrations, approval turnaround, active listings by type, enquiries, event registrations, top categories; CSV export.</li>
+<li><strong>Settings:</strong> categories, email templates, terms, review rules, audit log.</li>
+</ul>
+<h3>4.8 Notifications</h3>
+<p>Transactional email (verification, invitation, approvals, changes requested, enquiry received, event confirmation/reminder) plus in-app bell. Admin digest of pending items.</p>
+<h3>4.9 Search</h3>
+<p>Global search across members, businesses, items, events. MVP: PostgreSQL full-text + trigram; Phase 2: Meilisearch/Algolia if volume demands.</p>
+<hr>
+<h2>5. Data Model (core entities)</h2>
+<table>
+<thead>
+<tr>
+<th>Entity</th>
+<th>Key fields</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>User</strong></td>
+<td>id, email, password_hash, role, status (<code>PENDING/APPROVED/REJECTED/SUSPENDED</code>), invited_by, email_verified_at, last_login</td>
+</tr>
+<tr>
+<td><strong>MemberProfile</strong></td>
+<td>user_id, name, photo, headline, bio, city, country, phone, links (json), interests[], visibility settings, is_featured, featured_from/to</td>
+</tr>
+<tr>
+<td><strong>Business</strong></td>
+<td>id, owner_id, name, slug, logo, banner, category_id, description, contact (json), hours, location, website, socials, status, is_featured, featured_from/to</td>
+</tr>
+<tr>
+<td><strong>BusinessOffering</strong></td>
+<td>id, business_id, type (<code>PRODUCT/SERVICE</code>), title, description, images[], price, status</td>
+</tr>
+<tr>
+<td><strong>MarketItem</strong></td>
+<td>id, seller_id, title, category, condition, price, images[], location, status, sale_status, expires_at</td>
+</tr>
+<tr>
+<td><strong>Event</strong></td>
+<td>id, organiser_id, title, type, description, banner, starts_at, ends_at, timezone, venue/online_url, capacity, price, status, is_pinned_home, sponsor (name/logo)</td>
+</tr>
+<tr>
+<td><strong>EventRegistration</strong></td>
+<td>id, event_id, user_id?, name, email, phone, qty, answers (json), status (<code>CONFIRMED/WAITLIST/CANCELLED</code>)</td>
+</tr>
+<tr>
+<td><strong>Enquiry</strong></td>
+<td>id, target_type, target_id, sender_name, sender_email, message, status</td>
+</tr>
+<tr>
+<td><strong>Submission / ReviewLog</strong></td>
+<td>id, entity_type, entity_id, state, reviewer_id, comment, created_at (full history)</td>
+</tr>
+<tr>
+<td><strong>Category / Tag</strong></td>
+<td>id, type, name, slug</td>
+</tr>
+<tr>
+<td><strong>Notification</strong></td>
+<td>id, user_id, type, payload, read_at</td>
+</tr>
+<tr>
+<td><strong>AuditLog</strong></td>
+<td>id, actor_id, action, entity, before/after, created_at</td>
+</tr>
+<tr>
+<td><strong>Invitation</strong></td>
+<td>id, email, token_hash, expires_at, accepted_at, created_by</td>
+</tr>
+<tr>
+<td><strong>Report</strong></td>
+<td>id, reporter, target, reason, status</td>
+</tr>
+</tbody>
+</table>
+<p>Notes: soft-delete on user-generated content; slugs for SEO-friendly URLs; images stored as object-storage references with generated sizes.</p>
+<hr>
+<h2>6. Recommended Architecture &amp; Tech Stack</h2>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Recommendation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Frontend</td>
+<td><strong>Next.js (App Router) + TypeScript</strong>, Tailwind CSS, shadcn/ui (Radix), React Hook Form + Zod</td>
+</tr>
+<tr>
+<td>Backend</td>
+<td>Next.js server actions / route handlers (or NestJS API if a separate mobile app is planned)</td>
+</tr>
+<tr>
+<td>Database</td>
+<td><strong>PostgreSQL</strong> with <strong>Prisma</strong> ORM</td>
+</tr>
+<tr>
+<td>Auth</td>
+<td>Auth.js (NextAuth) or Clerk; RBAC middleware; signed invitation tokens</td>
+</tr>
+<tr>
+<td>Storage</td>
+<td>S3-compatible bucket + CDN; image optimisation (Next Image / Cloudinary)</td>
+</tr>
+<tr>
+<td>Email</td>
+<td>Resend / SendGrid / Amazon SES with React Email templates</td>
+</tr>
+<tr>
+<td>Payments (Phase 2)</td>
+<td>Stripe and/or Razorpay</td>
+</tr>
+<tr>
+<td>Background jobs</td>
+<td>BullMQ/Redis or Inngest (email queue, expiry jobs, reminders)</td>
+</tr>
+<tr>
+<td>Search</td>
+<td>PostgreSQL FTS → Meilisearch later</td>
+</tr>
+<tr>
+<td>Hosting</td>
+<td>Vercel (app) + managed Postgres (Neon/Supabase/RDS); or Docker on AWS/DigitalOcean</td>
+</tr>
+<tr>
+<td>Monitoring</td>
+<td>Sentry, uptime checks, PostHog/GA4 analytics</td>
+</tr>
+<tr>
+<td>CI/CD</td>
+<td>GitHub Actions: lint, type-check, tests, preview deploys, staged rollout</td>
+</tr>
+</tbody>
+</table>
+<p>Architecture: monolithic modular app (modules: auth, members, businesses, marketplace, events, review, notifications, admin, reports) so it can be split later.</p>
+<hr>
+<h2>7. API Outline (REST, illustrative)</h2>
+<pre><code>POST   /api/auth/register            POST /api/auth/accept-invite
+GET    /api/members?query&amp;filters    GET  /api/members/:slug
+GET    /api/businesses               GET  /api/businesses/:slug
+POST   /api/businesses               PATCH /api/businesses/:id
+POST   /api/submissions/:type/:id/submit
+GET    /api/market-items             POST /api/market-items
+GET    /api/events                   POST /api/events/:id/register
+POST   /api/enquiries                POST /api/reports
+
+GET    /api/admin/queue?type&amp;status
+POST   /api/admin/review/:id         { decision: approve|changes|reject, comment }
+POST   /api/admin/featured           POST /api/admin/users/import
+GET    /api/admin/reports/:metric
+</code></pre>
+<p>All write endpoints validated with Zod, authorised by role and ownership, and rate-limited.</p>
+<hr>
+<h2>8. Design System &amp; UX</h2>
+<p><strong>Reference style:</strong> clean, elegant, women-focused; rounded cards, simple line icons, generous whitespace, calm hierarchy (inspired by the supplied workflow diagram, WLN, National Women's Collaborative and Chief).</p>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Value (starting point)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Primary purple</td>
+<td><code>#5B2A86</code> (deep), <code>#7B4FA6</code> (mid)</td>
+</tr>
+<tr>
+<td>Lavender surface</td>
+<td><code>#EBDFF5</code> / <code>#F6F0FB</code></td>
+</tr>
+<tr>
+<td>Teal accent</td>
+<td><code>#2A9D8F</code> (accent), <code>#D8F1EE</code> (soft surface)</td>
+</tr>
+<tr>
+<td>Blush (alerts/changes needed)</td>
+<td><code>#F8DDE8</code></td>
+</tr>
+<tr>
+<td>Text</td>
+<td><code>#2B2233</code> primary, <code>#6B6275</code> secondary</td>
+</tr>
+<tr>
+<td>Radius</td>
+<td>16–24px cards, pill buttons</td>
+</tr>
+<tr>
+<td>Typography</td>
+<td>Serif display (e.g. <em>Fraunces</em> / <em>Playfair Display</em>) for headings; <em>Inter</em> / <em>DM Sans</em> for UI</td>
+</tr>
+<tr>
+<td>Icons</td>
+<td>Lucide, 1.5px stroke</td>
+</tr>
+</tbody>
+</table>
+<p><strong>UX principles</strong></p>
+<ul>
+<li>Home page: hero with clear &quot;Become a member&quot; CTA → stats → <strong>&quot;See What's Happening&quot; event feed (see 4.4.1)</strong> → featured SMEs → marketplace highlights → member stories → newsletter. The event feed sits directly under the hero/stats so activity is visible without scrolling far.</li>
+<li>Simple top navigation: Members · Businesses · Marketplace · Events · About · Join / Login.</li>
+<li>Status colour language consistent across dashboards: lavender = draft, teal = approved/live, blush = changes needed.</li>
+<li>Mobile-first, cards stack cleanly; sticky bottom action bar on mobile dashboard.</li>
+<li>Accessibility: WCAG 2.2 AA (contrast, focus states, keyboard nav, alt text, reduced motion).</li>
+</ul>
+<hr>
+<h2>9. Sitemap</h2>
+<p><strong>Public:</strong> Home · About · Members (list, profile) · Businesses (list, category, detail) · Marketplace (list, item) · Events (list, detail, register) · Join / Login · Contact · Terms · Privacy
+<strong>Member:</strong> Dashboard · Profile · Business · Listings · Marketplace · Events · Enquiries · Registrations · Notifications · Settings
+<strong>Admin:</strong> Overview · Approvals · Members · Businesses · Marketplace · Events · Featured · Reports · Categories · Email templates · Settings · Audit log</p>
+<hr>
+<h2>10. Non-Functional Requirements</h2>
+<ul>
+<li><strong>Security:</strong> HTTPS everywhere, OWASP Top 10 controls, hashed passwords (Argon2/bcrypt), CSRF/XSS protection, file-type and size validation, virus scan on uploads, RBAC, audit logging.</li>
+<li><strong>Privacy:</strong> consent capture, field-level visibility, data export and deletion on request (GDPR-style), no exposure of contact details without permission.</li>
+<li><strong>Performance:</strong> image optimisation, CDN, caching/ISR for public pages, DB indexing on slug/status/category/date.</li>
+<li><strong>Scalability:</strong> target 10k members, 5k active listings without re-architecture.</li>
+<li><strong>SEO:</strong> server-rendered pages, clean slugs, meta/OG tags, sitemap.xml, structured data (Organization, LocalBusiness, Event, Product).</li>
+<li><strong>Reliability:</strong> daily DB backups with restore test, staging environment, error monitoring.</li>
+<li><strong>Anti-abuse:</strong> CAPTCHA (hCaptcha/Turnstile) on forms, rate limits, report flow, profanity/spam filters.</li>
+<li><strong>Internationalisation-ready:</strong> timezone-aware events, currency configuration, i18n structure for future languages.</li>
+</ul>
+<hr>
+<h2>11. Delivery Plan</h2>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Scope</th>
+<th>Est. duration*</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>0 – Discovery &amp; Design</strong></td>
+<td>Confirm scope, wireframes, design system, clickable prototype</td>
+<td>2–3 weeks</td>
+</tr>
+<tr>
+<td><strong>1 – Foundation</strong></td>
+<td>Auth, roles, registration, invitations, profile, admin approval of members</td>
+<td>3 weeks</td>
+</tr>
+<tr>
+<td><strong>2 – Directories</strong></td>
+<td>Business directory, offerings, member directory, enquiries, featured</td>
+<td>3 weeks</td>
+</tr>
+<tr>
+<td><strong>3 – Marketplace &amp; Events</strong></td>
+<td>Buy &amp; sell, events, registration, review workflow for all content</td>
+<td>3 weeks</td>
+</tr>
+<tr>
+<td><strong>4 – Admin &amp; Reports</strong></td>
+<td>Admin dashboard, moderation, reports, notifications, audit log</td>
+<td>2 weeks</td>
+</tr>
+<tr>
+<td><strong>5 – QA &amp; Launch</strong></td>
+<td>Testing, accessibility, performance, security review, data import, go-live</td>
+<td>2 weeks</td>
+</tr>
+<tr>
+<td><strong>Phase 2 roadmap</strong></td>
+<td>Online payments, in-app messaging, member reviews/ratings, search upgrade, mobile app/PWA, paid memberships</td>
+<td>TBD</td>
+</tr>
+</tbody>
+</table>
+<p>*Approximate for a team of 2 developers + 1 designer + part-time QA.</p>
+<p><strong>Testing:</strong> unit (Vitest/Jest), integration on workflow state machine, E2E (Playwright) for registration → approval → publish → enquiry, accessibility (axe), load test on directory search.</p>
+<hr>
+<h2>12. Acceptance Criteria (MVP)</h2>
+<ol>
+<li>New and invited members can register/activate; admin can approve or reject with reason.</li>
+<li>Approved members can create profile, business with offerings, market items and events.</li>
+<li>No content is public until approved; changes-requested content can be revised and resubmitted; history is recorded.</li>
+<li>Public can browse, search and filter all four directories; enquiries and event registrations are delivered and stored.</li>
+<li>Admin can feature members/SMEs, manage users/events, and view reports.</li>
+<li>Emails and notifications fire for all workflow transitions.</li>
+<li>Meets performance, accessibility and security targets in Section 10.</li>
+</ol>
+<hr>
+<h2>13. Open Questions for Stakeholders</h2>
+<ol>
+<li>Is membership free, paid, or both? Are there membership tiers?</li>
+<li>Should online payments be included at launch, or contact-based only?</li>
+<li>Countries/currencies/languages to support?</li>
+<li>Who verifies members and what evidence is required (ID, business registration, referral)?</li>
+<li>Should minor edits to published content need re-approval?</li>
+<li>Number of existing members to import, and their data format?</li>
+<li>Branding assets available (logo, fonts, photography), and domain/hosting preferences?</li>
+<li>Any legal requirements (terms of trade, data residency, age restrictions)?</li>
+</ol>
+
+</body></html>
